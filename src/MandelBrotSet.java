@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import java.util.Timer;
 
 public class MandelBrotSet extends JFrame {
     private ContentPanel panel;
@@ -15,23 +16,21 @@ public class MandelBrotSet extends JFrame {
     }
     public static void main(String args[]) throws InterruptedException {
         MandelBrotSet m = new MandelBrotSet("Mandelbrot set");
-        m.setDepth(60);
+        m.setDepth(1530);//1530 is last color
         m.setVisible(true);
-       // m.animate();
+        //m.animate();
 
-    }
+    }// cool points: (-0.00099645, .75097625, .00000085)
     public static double[] getImageBounds() {//values for picture of whole fractal shown
         double[] out = new double[4];
-        double centerX = -0.5;//-.5
-        double centerY = 0;//0
-        double range = 3;//3
+        double centerX = .251;//-.5
+        double centerY = .00005;//0
+        double range = .000005;//3
 
         out[0] = centerX - range/2.0;
         out[1] = range;
         out[2] = -centerY - range/2.0;
         out[3] = range;
-        System.out.println(out[0]);
-        System.out.println(out[1]);
         return out;
     }
     public int getDepth() {
@@ -42,10 +41,11 @@ public class MandelBrotSet extends JFrame {
     }
     public void animate() throws InterruptedException {
         depth = 6;
-        while (depth < 1000) {
+        int limit = 600;
+        while (depth < limit) {
+            //ScuffedTimer.wait(100);
+            depth++;
             System.out.println("d = " + depth);
-            Thread.sleep(1);
-            depth += 1;
             this.repaint();
         }
     }

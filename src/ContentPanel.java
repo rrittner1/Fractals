@@ -54,7 +54,6 @@ public class ContentPanel extends JPanel {
             }
         }
 
-
     }
     public int iterations(Complex c) {
         int i = -1;
