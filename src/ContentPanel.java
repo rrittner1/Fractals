@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ContentPanel extends JPanel {
     private JFrame container;
@@ -9,8 +11,8 @@ public class ContentPanel extends JPanel {
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        double[] bounds = ((MandelBrotSet)container).getImageBounds();
-        int depth = ((MandelBrotSet)container).getDepth();
+        double[] bounds = ((MandelbrotSet)container).getImageBounds();
+        int depth = ((MandelbrotSet)container).getDepth();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < width; j++) {
                 //System.out.println("i: " + i + "j: " + j);
@@ -39,9 +41,9 @@ public class ContentPanel extends JPanel {
                     blue = mod - 2*d6;
                     green = 3*d6 - mod;
                 }
-                red *= 1530/depth;
-                green *= 1530/depth;
-                blue *= 1530/depth;
+                red *= 1530.0/depth;
+                green *= 1530.0/depth;
+                blue *= 1530.0/depth;
                 double ratio = 1.0*num/depth;
                 red += (255 - red)*ratio;
                 green += (255 - green)*ratio;
@@ -58,7 +60,7 @@ public class ContentPanel extends JPanel {
     public int iterations(Complex c) {
         int i = -1;
         Complex x = new Complex(0,0);
-        while (x.mod() <= 2 && i < ((MandelBrotSet)container).getDepth()) {
+        while (x.mod() <= 2 && i < ((MandelbrotSet)container).getDepth()) {
             x = c.plus(x.times(x));
             i++;
         }
