@@ -55,6 +55,8 @@ public class ContentPanel extends JPanel {
                 g.fillRect((int)Math.round(x), (int)Math.round(y), 1, 1);
             }
         }
+        //g.setColor(new Color(255,255,255));
+        //g.drawString("" + System.currentTimeMillis(), 0, 10);
 
     }
     public int iterations(Complex c) {

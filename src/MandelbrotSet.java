@@ -12,6 +12,7 @@ public class MandelbrotSet extends JFrame {
     private double centerY;
     private double range;
     private TextField[] fields;
+    private boolean done;
 
     public MandelbrotSet(String title) {
         super(title);
@@ -29,17 +30,21 @@ public class MandelbrotSet extends JFrame {
     public void componentSetup() {
         TextField x = new TextField("centerX",this);
         x.setBounds(0,625,100,25);
+        x.setText("" + centerX);
         panel.add(x);
         fields[0] = x;
         TextField y = new TextField("centerY",this);
         y.setBounds(120, 625, 100, 25);
+        y.setText("" + centerY);
         panel.add(y);
         fields[1] = y;
         TextField r = new TextField("range",this);
+        r.setText("" + range);
         r.setBounds(240, 625, 100, 25);
         panel.add(r);
         fields[2] = r;
         TextField d = new TextField("depth",this);
+        d.setText("" + depth);
         d.setBounds(360, 625, 100, 25);
         panel.add(d);
         fields[3] = d;
@@ -57,6 +62,10 @@ public class MandelbrotSet extends JFrame {
         dLabel.setBounds(360,600, 100, 25);
         panel.add(dLabel);
 
+        Button depthButton = new Button("Don't Click", this);
+        depthButton.setBounds(460, 600, 120,25);
+        depthButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        panel.add(depthButton);
     }
     public void valueEntered(String str) {
         /*
@@ -74,6 +83,11 @@ public class MandelbrotSet extends JFrame {
             }
         } else if (str.equals("depth")) {//runs on depth entry*/
         if (true) {
+            if (!done) {
+                done = true;
+                ScuffedTimer.wait(depth*2 + 150);
+            }
+
             if (!fields[0].getText().equals("")) {
                 centerX = Double.parseDouble(fields[0].getText());
             }
@@ -86,6 +100,7 @@ public class MandelbrotSet extends JFrame {
             if (!fields[3].getText().equals("")) {
                 depth = Integer.parseInt(fields[3].getText());
             }
+            System.out.println(System.currentTimeMillis());
             this.repaint();
         }
     }
@@ -111,14 +126,17 @@ public class MandelbrotSet extends JFrame {
     public void setDepth(int d) {
         depth = d;
     }
+    public TextField[] getfields() {
+        return fields;
+    }
     public void animate() throws InterruptedException {
-        depth = 6;
-        int limit = 600;
-        while (depth < limit) {
-            //ScuffedTimer.wait(100);
-            depth++;
-            System.out.println("d = " + depth);
+        int limit = 600 + depth;
+        while (depth < limit && !done) {
+            ScuffedTimer.wait(20);
+            depth += 6;
+            fields[3].setText("" + depth);
             this.repaint();
         }
+        done = false;
     }
 }
