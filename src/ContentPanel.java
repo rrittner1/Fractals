@@ -10,6 +10,7 @@ public class ContentPanel extends JPanel {
         container = c;
     }
     public void paintComponent(Graphics g) {
+        System.out.println(Thread.currentThread().getName());
         super.paintComponent(g);
         double[] bounds = ((MandelbrotSet)container).getImageBounds();
         int depth = ((MandelbrotSet)container).getDepth();

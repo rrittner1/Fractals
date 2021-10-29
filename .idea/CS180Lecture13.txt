@@ -1,0 +1,21 @@
+CS180 Lecture 13: File I/O
+memory (ram) is volatile - lost when power lost
+Storage (disks, tapes, DVD-ROMS, thumb drives, etc) is non volatile - maintains data without power
+Program: inert version of code (stored in storage), Process: the execution of the program (stored in memory)
+java provides and abstraction for interacting with files and the file system (class File)
+but, file name is OS/FS dependent
+directory conventions are OS/FS dependent
+
+All files are just collections of bytes, we give these bytes meaning
+disks are very slow: most of the time we try hard to not access the disk.
+most file operations are buffered: reads lots of data from storage to memory
+
+Java File I/O
+low leve: FileOutputStream
+HighLevel: DataOutputStream
+
+File class:
+File f = new File("data.txt");
+methods: canExecute(), canWrite(), canRead(),
+delete() etc.
+

@@ -6,18 +6,34 @@ public class Button extends JButton implements ActionListener {
     private String text;
     private MandelbrotSet m;
     private boolean animateStatus;
-    public Button(String str, MandelbrotSet m) {
+    private boolean zoomStatus;
+    private String name;
+    public Button(String str, MandelbrotSet m, String name) {
         super(str);
         text = str;
         this.m = m;
         this.addActionListener(this);
-        animateStatus = true;
+        animateStatus = false;
+        zoomStatus = false;
+        this.name = name;
     }
     public void actionPerformed(ActionEvent e) {
-        try {
-            m.animate();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+        if (name.equals("animate button")) {
+            if (animateStatus) {
+                m.getTimer().stop();
+                this.setText("Sharpen");
+            } else {
+                m.sharpen();
+            }
+            animateStatus = !animateStatus;
+        } else {
+            if (zoomStatus) {
+                m.getTimer().stop();
+                this.setText("Zoom");
+            } else {
+                m.zoom();
+            }
+            zoomStatus = !zoomStatus;
         }
     }/*
     public void done(boolean status) {

@@ -1,6 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
-import java.util.Timer;
+import java.util.Set;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -12,7 +12,11 @@ public class MandelbrotSet extends JFrame {
     private double centerY;
     private double range;
     private TextField[] fields;
+    private Button depthButton;
+    private Button zoomButton;
     private boolean done;
+    private Timer timer;
+    private static Object sync = new Object();
 
     public MandelbrotSet(String title) {
         super(title);
@@ -62,10 +66,14 @@ public class MandelbrotSet extends JFrame {
         dLabel.setBounds(360,600, 100, 25);
         panel.add(dLabel);
 
-        Button depthButton = new Button("Don't Click", this);
+        depthButton = new Button("Sharpen", this, "animate button");
         depthButton.setBounds(460, 600, 120,25);
         depthButton.setHorizontalTextPosition(SwingConstants.CENTER);
         panel.add(depthButton);
+        zoomButton = new Button("Zoom", this, "zoom button");
+        zoomButton.setBounds(460,625,120,25);
+        zoomButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        panel.add(zoomButton);
     }
     public void valueEntered(String str) {
         /*
@@ -108,6 +116,8 @@ public class MandelbrotSet extends JFrame {
         MandelbrotSet m = new MandelbrotSet("Mandelbrot set");
         m.componentSetup();
         m.setVisible(true);
+        System.out.println(Thread.currentThread().getName());
+        //System.out.println(Thread.currentThread());
         //m.animate();
 
     }// cool points: (-0.00099645, .75097625, .00000085)
@@ -129,14 +139,46 @@ public class MandelbrotSet extends JFrame {
     public TextField[] getfields() {
         return fields;
     }
-    public void animate() throws InterruptedException {
-        int limit = 600 + depth;
-        while (depth < limit && !done) {
-            ScuffedTimer.wait(20);
-            depth += 6;
-            fields[3].setText("" + depth);
-            this.repaint();
-        }
-        done = false;
+    public Timer getTimer() {
+        return timer;
     }
+    public void sharpen() {
+        int delay = 500;
+        ActionListener animateRunner = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                depth += 6;
+                fields[3].setText("" + depth);
+                panel.repaint();
+            }
+        };
+        timer = new Timer(delay, animateRunner);
+        depthButton.setText("stop");
+        timer.start();
+    }
+    public void zoom() {
+        int delay = 17;
+        ActionListener animateRunner = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                range *= 0.9;
+                fields[2].setText(String.format("%.12f", range));
+                panel.repaint();
+            }
+        };
+        timer = new Timer(delay, animateRunner);
+        zoomButton.setText("stop");
+        timer.start();
+    }
+    public void nextFrame() {
+        depth += 6;
+        fields[3].setText("" + depth);
+        panel.repaint();
+    }
+    /*
+    @Override
+    public void paint(Graphics g) {
+        synchronized (sync) {
+            super.paint(g);
+        }
+    }*/
+
 }
